@@ -39,10 +39,11 @@ To allow clients to select the exact architecture tier that matches their reliab
 
 | Architecture Option | Monthly Pass-Through Cost | Renting / API Cost Line Items | Gross Profit ($29k MRR) | Gross Margin % | Technical & Strategic Fit |
 | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Option 0: Ultra-Low Capital Entry Tier** *(For Low Capital Clients)* | **$35.00 - $49.00 / mo FLAT** | Hetzner CPX31 / AMD Ryzen CPU Server ($35-$49/mo flat) running llama.cpp CPU + Faster-Whisper CPU. | **$2,851.00 / mo** *(100 stores)* | **98.31%** | **Lowest upfront capital requirement.** Zero GPU fees. Ideal for initial 50-200 store pilot phase. |
 | **Option 1: Ultra-Lean In-House GPU Stack** *(Recommended)* | **$99.00 / mo FLAT** | Single Hetzner Dedicated GPU AX42 / Bare-Metal node ($99/mo flat) hosting FP8 vLLM + DB + Web API. | **$28,901.00 / mo** | **99.66%** | Maximum profit margin, 100% data privacy, Nouchi/Dioula tuned, zero token anxiety. |
 | **Option 2: Multi-Node Redundant In-House Stack** | **$194.50 / mo FLAT** | Hetzner AX102 GPU Server ($119/mo) + CPX31 Web/DB Node ($16.50/mo) + setup/bandwidth ($59/mo). | **$28,805.50 / mo** | **99.33%** | Enterprise redundant hardware isolation across dual data centers for 99.99% SLA. |
 | **Option 3: Hyper-Optimized 3rd-Party APIs** | **~$314.67 / mo** | Groq STT ($66.67) + Gemini 2.0 LLM ($30.00) + Deepgram Aura TTS ($150.00) + Hetzner Cloud ($68.00). | **$28,685.33 / mo** | **98.91%** | Zero server maintenance; utilizes ultra-fast pay-as-you-go API providers. |
-| **Option 4: Standard 3rd-Party APIs** *(Baseline)* | **~$1,269.00 / mo** | Deepgram Nova-2 STT ($645.00) + Gemini 1.5 LLM ($76.00) + Azure TTS ($480.00) + Hetzner Cloud ($68.00). | **$27,731.00 / mo** | **95.62%** | Commercial off-the-shelf API baseline. |
+| **Option 4: Standard 3rd-Party APIs** *(Screenshot Baseline)* | **~$1,269.00 / mo** | Deepgram Nova-2 STT ($645.00) + Gemini 1.5 LLM ($76.00) + Azure TTS ($480.00) + Hetzner Cloud ($68.00). | **$27,731.00 / mo** | **95.62%** | Commercial off-the-shelf API baseline. |
 
 ---
 

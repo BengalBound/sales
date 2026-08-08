@@ -77,10 +77,11 @@ The following table integrates market rates for 3rd-party services (Deepgram, Ge
 
 | Architecture Tier | Direct 3rd-Party / Hosting Cost | Renting / API Cost Breakdown | Gross Margin ($29k MRR) | Primary Advantage |
 | :--- | :--- | :--- | :--- | :--- |
+| **Option 0: Ultra-Low Capital Entry Tier** *(For Low Capital Clients)* | **$35.00 - $49.00 / mo FLAT** | Hetzner CPX31 / AMD Ryzen CPU Server ($35-$49/mo flat) running llama.cpp CPU + Faster-Whisper CPU. | **98.31%** *(100 stores)* | **Lowest upfront capital investment.** Zero GPU hardware fees. Ideal for initial 50-200 store pilot phase. |
 | **Option 1: Ultra-Lean In-House GPU Stack** *(Recommended)* | **$99.00 / month FLAT** | Single Hetzner Dedicated GPU AX42 / Bare-Metal node ($99/mo flat) hosting vLLM FP8 AI + DB + Web API. | **99.66%** ($28,901.00 net) | Max margin, 100% privacy, Nouchi/Dioula tuned, zero token anxiety. |
 | **Option 2: Multi-Node Redundant In-House Stack** | **$194.50 / month FLAT** | Hetzner AX102 GPU Server ($119/mo) + CPX31 Web/DB Node ($16.50/mo) + setup/bandwidth ($59/mo). | **99.33%** ($28,805.50 net) | Redundant enterprise hardware, 99.99% uptime isolation across data centers. |
 | **Option 3: Hyper-Optimized 3rd-Party APIs** | **~$314.67 / month** | Groq STT ($66.67) + Gemini 2.0 LLM ($30) + Deepgram Aura TTS ($150) + Hetzner Cloud ($68). | **98.91%** ($28,685.33 net) | Zero server maintenance; pay-as-you-go ultra-fast API providers. |
-| **Option 4: Standard 3rd-Party APIs** *(Baseline)* | **~$1,269.00 / month** | Deepgram Nova-2 STT ($645) + Gemini 1.5 LLM ($76) + Azure TTS ($480) + Hetzner Cloud ($68). | **95.62%** ($27,731.00 net) | Commercial off-the-shelf API baseline. |
+| **Option 4: Standard 3rd-Party APIs** *(Screenshot Baseline)* | **~$1,269.00 / month** | Deepgram Nova-2 STT ($645) + Gemini 1.5 LLM ($76) + Azure TTS ($480) + Hetzner Cloud ($68). | **95.62%** ($27,731.00 net) | Commercial off-the-shelf API baseline. |
 
 ### Key Strategic Advantages:
 * **Retention of 99%+ Margins:** Moving to the in-house stack increases monthly net profit by **$1,074.50 - $1,170.00/month** at 1,000 stores ($29,000 MRR). At 10,000 stores, savings scale to multi-million dollar annual advantages.
