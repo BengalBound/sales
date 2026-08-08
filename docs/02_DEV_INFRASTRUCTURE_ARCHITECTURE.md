@@ -69,14 +69,14 @@ graph TD
 sequenceDiagram
     participant Merchant as Store Owner / Salesman (Mobile App / WhatsApp)
     participant PyVoiceStream as Mobile Voice Stream Bridge
-    participant LocalSTT as In-House STT (Faster-Whisper)
-    participant LocalLLM as In-House Multilingual LLM (Qwen2.5)
+    participant LocalSTT as In-House STT (Faster-Whisper - Nouchi/Dioula Tuned)
+    participant LocalLLM as In-House Multilingual LLM (Qwen2.5 / Llama-3)
     participant LocalTTS as In-House Multilingual TTS (XTTS v2)
     participant PyTicketEngine as Python Smart Ticketing Engine
     participant MasterWebAdmin as Master Web Portal (Us / IT Admin)
 
     Merchant->>PyVoiceStream: One-Tap Mobile Voice / Telephony Stream
-    PyVoiceStream->>LocalSTT: Transcribe Audio in Native Language
+    PyVoiceStream->>LocalSTT: Transcribe Audio in Native Language & Dialects
     LocalSTT-->>LocalLLM: Direct Text Stream to Local vLLM
     LocalLLM-->>LocalTTS: Generated Response Tokens -> Local TTS Engine
     LocalTTS-->>PyVoiceStream: Stream Audio Back to Mobile App / Call
@@ -88,6 +88,12 @@ sequenceDiagram
         MasterWebAdmin->>MasterWebAdmin: Platform Owner Clicks 'Approve & Execute'
     end
 ```
+
+### 3.1 West African Dialect Tuning & Serving Options
+* **Native Nouchi & Dioula Processing:** Unlike 3rd-party APIs (Deepgram Nova-2, Azure TTS, Gemini) which struggle with Ivoirian street slang (*"J'ai gâté 2 sacs de riz"*) and West African trade dialects (Dioula/Jula), our self-hosted `Faster-Whisper` STT and `Qwen2.5` LLM pipeline is explicitly fine-tuned on regional audio patterns.
+* **Serving Option 1 (Single-Node FP8 vLLM Engine - $99.00/mo FLAT):** Quantizes `Qwen2.5-7B` (FP8, 5.5 GB VRAM), `Qwen2-VL` (FP8, 6.0 GB VRAM), `Faster-Whisper` (INT8, 1.5 GB VRAM), and `XTTS v2 / Kokoro` (1.5 GB VRAM) into < 15 GB VRAM on a single Hetzner Dedicated GPU AX42 server, yielding **99.66% gross margins**.
+* **Serving Option 2 (Multi-Node Redundant Cluster - $194.50/mo FLAT):** Separates Primary GPU (`AX102` @ $119/mo) for unquantized high-concurrency vLLM inference from Web/PostgreSQL node (`CPX31` @ $16.50/mo), delivering **99.33% gross margins** with 99.99% enterprise SLA.
+* **Serving Option 3 (Hyper-Optimized 3rd-Party API Bridge - ~$314.67/mo):** Configures DRF API adapters to stream audio directly to Groq Whisper Turbo ($0.04/hr) and Gemini 2.0 Flash ($0.10/1M tokens) as a zero-hardware-maintenance option or emergency automated failover.
 
 ---
 

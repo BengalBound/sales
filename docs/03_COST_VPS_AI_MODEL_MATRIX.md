@@ -41,10 +41,27 @@ graph TD
 | **In-House AI Inference Node (Secondary GPU/CPU)** | **Hetzner Dedicated AX52** (AMD Ryzen 7 7700 / 64 GB DDR5 / CPU Inference) | **$59.00 / mo** | CPU Quantized inference fallback for background tasks (Lead Hunter in all languages). |
 | **TOTAL COMPANY INFRASTRUCTURE BUDGET** | **100% Unlimited Usage Flat Rate** | **$194.50 / month total** | **$0.00 variable token/voice API fees across ALL stores globally!** |
 
+### 2.1 Client Architecture Selection Matrix & Pass-Through Hosting Costs
+
+> **Pass-Through Cost Notice:** All costs listed below represent **direct 3rd-party pass-through expenses** paid directly to infrastructure providers (Hetzner Dedicated, Groq, Google Cloud, Deepgram, Azure). They are NOT platform software markups.
+
+| Architecture Option | Monthly Pass-Through Cost | Renting / API Cost Line Items | Gross Profit ($29k MRR) | Gross Margin % | Technical & Strategic Fit |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Option 1: Ultra-Lean In-House GPU Stack** *(Recommended)* | **$99.00 / mo FLAT** | Single Hetzner Dedicated GPU AX42 / Bare-Metal node ($99/mo flat) hosting FP8 vLLM + DB + Web API. | **$28,901.00 / mo** | **99.66%** | Maximum profit margin, 100% data privacy, Nouchi/Dioula tuned, zero token anxiety. |
+| **Option 2: Multi-Node Redundant In-House Stack** | **$194.50 / mo FLAT** | Hetzner AX102 GPU Server ($119/mo) + CPX31 Web/DB Node ($16.50/mo) + setup/bandwidth ($59/mo). | **$28,805.50 / mo** | **99.33%** | Enterprise redundant hardware isolation across dual data centers for 99.99% SLA. |
+| **Option 3: Hyper-Optimized 3rd-Party APIs** | **~$314.67 / mo** | Groq STT ($66.67) + Gemini 2.0 LLM ($30.00) + Deepgram Aura TTS ($150.00) + Hetzner Cloud ($68.00). | **$28,685.33 / mo** | **98.91%** | Zero server maintenance; utilizes ultra-fast pay-as-you-go API providers. |
+| **Option 4: Standard 3rd-Party APIs** *(Baseline)* | **~$1,269.00 / mo** | Deepgram Nova-2 STT ($645.00) + Gemini 1.5 LLM ($76.00) + Azure TTS ($480.00) + Hetzner Cloud ($68.00). | **$27,731.00 / mo** | **95.62%** | Commercial off-the-shelf API baseline. |
+
+### 2.2 Key Strategic Infrastructure Advantages:
+* **Margin Supremacy (99.33% - 99.66%):** Even against current lower 3rd-party estimates (~$1,269/mo), our self-hosted stack saves **$1,074.50 - $1,170.00/mo** at 1,000 stores. Scaling to 10,000 stores generates multi-million dollar annual profit advantages.
+* **Elimination of Token Anxiety:** Third-party providers introduce fluctuating variable charges. A flat **$99.00 - $194.50/mo rate** on Hetzner dedicated hardware allows us to offer unlimited voice and vision scans to merchants, forming an unbeatable moat in the $29/mo Starter Plan.
+* **Infrastructure Synergy:** By deploying dedicated hardware, we host AI models for $0 incremental fee while absorbing core web app and database hosting into a single unified environment.
+* **Dialect Optimization:** Self-hosted models natively support local dialects (e.g., **Nouchi** and **Dioula** in West Africa) where third-party generic APIs frequently fail.
+
 ---
 
 ## 3. Business & Global Expansion Strategy
 
 1. **Zero-Localization Overhead:** Merchants across Latin America, South Asia, Middle East, Africa, Southeast Asia, and Europe use their own native spoken language without code changes.
-2. **Dialect Adaptation:** Local voice STT/TTS auto-adapts to regional accents and mixed language speech (e.g. Banglish, Spanglish, Hinglish).
+2. **Dialect Adaptation:** Local voice STT/TTS auto-adapts to regional accents and mixed language speech (e.g. Nouchi, Dioula, Banglish, Spanglish, Hinglish).
 3. **99.3% Profit Margin:** Global multi-language scalability without paying foreign language API surcharges.

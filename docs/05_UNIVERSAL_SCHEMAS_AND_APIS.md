@@ -63,20 +63,24 @@ class TenantBranding(models.Model):
     secondary_color = models.CharField(max_length=7, default="#10B981")
     font_family = models.CharField(max_length=64, default="Inter")
     custom_css = models.TextField(blank=True)
-    native_language = models.CharField(max_length=10, default="en", help_text="ISO language code (e.g. bn, hi, es, ar, fr)")
+    native_language = models.CharField(max_length=10, default="fr", help_text="ISO language/dialect code (e.g. fr, nouchi, dioula, bn, hi, es, ar)")
 ```
 
 ---
 
 ## 2. Python REST API Endpoints Specification (Django REST Framework)
 
-| Method | Endpoint Route | View / Handler (Python DRF) | Client Touchpoint Target | Multilingual Capability | Access Control |
-|--------|----------------|----------------------------|--------------------------|-------------------------|----------------|
-| `GET` | `/api/v1/master/overview/` | `MasterMetricsView.as_view()` | **Master Web Portal (Us)** | Global Region Metrics | Master SuperAdmin |
-| `GET` | `/api/v1/ceo/dashboard-analytics/` | `CEODashboardView.as_view()` | **Tenant CEO Mobile App & Web Portal** | Native Language | Tenant CEO / Admin |
+| Method | Endpoint Route | View / Handler (Python DRF) | Client Touchpoint Target | Multilingual & Dialect Capability | Access Control |
+|--------|----------------|----------------------------|--------------------------|-----------------------------------|----------------|
+| `GET` | `/api/v1/master/overview/` | `MasterMetricsView.as_view()` | **Master Web Portal (Us)** | Global Region Metrics & GPU Load | Master SuperAdmin |
+| `GET` | `/api/v1/ceo/dashboard-analytics/` | `CEODashboardView.as_view()` | **Tenant CEO Mobile App & Web Portal** | Native Language & Dialects | Tenant CEO / Admin |
 | `GET/POST` | `/api/v1/inventory/items/` | `UniversalInventoryViewSet` | **Mobile App & Web Portal** | Multilingual Product Attributes | Tenant Authenticated |
-| `POST` | `/api/v1/vision/ocr-match/` | `VisionOCRMatchView.as_view()` | **Clerk Mobile App (Camera Scan)** | **80+ Written Scripts** | Tenant Salesman |
-| `POST` | `/api/v1/voice/telephony-webhook/` | `VoiceTelephonyBridgeView.as_view()` | **Mobile App (Mic) & Telephony** | **99+ Spoken Languages** | Telephony Signature |
+| `POST` | `/api/v1/vision/ocr-match/` | `VisionOCRMatchView.as_view()` | **Clerk Mobile App (Camera Scan)** | **80+ Written Scripts (Included in Flat Rate)** | Tenant Salesman |
+| `POST` | `/api/v1/voice/telephony-webhook/` | `VoiceTelephonyBridgeView.as_view()` | **Mobile App (Mic) & Telephony** | **99+ Spoken Languages & Dialects (Nouchi, Dioula)** | Telephony Signature |
 | `GET/POST` | `/api/v1/support/tickets/` | `ITSupportTicketViewSet` | **Mobile App & CEO Web Portal** | Native Language Support Tickets | Tenant User / AI Agent |
 | `POST` | `/api/v1/support/tickets/{id}/approve/` | `ApproveAndExecuteScriptView.as_view()` | **Master Web Portal (Us)** | Dynamic Code Execution | IT Admin Only |
 | `GET/POST` | `/api/v1/lead-hunter/campaigns/` | `LeadHunterCampaignViewSet` | **Master Web Portal (Us)** | **Global Pitch Generation** | Master Admin / Enterprise |
+
+> **Architecture Routing Adapter Note:** Django REST Framework handlers (`VoiceTelephonyBridgeView` & `VisionOCRMatchView`) support dynamic routing backends:
+> - **Option 1 & 2 (In-House vLLM):** Routes audio/image payloads directly to local `vLLM` & `Faster-Whisper` socket endpoints ($0.00 variable fee).
+> - **Option 3 & 4 (3rd-Party APIs):** Routes audio/image payloads to Groq Turbo / Gemini 2.0 / Deepgram API gateways via environment flags (`AI_ENGINE_BACKEND=vllm|groq|gemini`).
