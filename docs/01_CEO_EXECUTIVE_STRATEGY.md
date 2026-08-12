@@ -87,42 +87,39 @@ As of the current production prototype baseline (`Bound OS Prototype.dc.html`), 
 
 ---
 
-## 4. Financial Comparison: Third-Party API vs. In-House AI Stack
+## 4. Active Primary Production Infrastructure & Financial Model
 
-The financial comparison between third-party API dependencies and our in-house self-hosted stack reflects current market rates for services like Deepgram Nova-2 ($645/mo), Gemini 1.5 Flash ($76/mo), and Azure Standard TTS ($480/mo).
+BOUND OS operates on an **Active Primary Production Architecture** powered by commercial Cloud API providers:
+- **Speech-to-Text (STT)**: Deepgram Nova-2 ($0.0043 / min) → **$645.00 / mo**
+- **Large Language Model (LLM)**: Gemini 1.5 Flash ($0.075/1M in, $0.30/1M out) → **$76.00 / mo**
+- **Text-to-Speech (TTS)**: Azure Standard TTS ($4.00 / 1M chars) → **$480.00 / mo**
+- **Vision OCR**: Gemini 1.5 Flash Multimodal (Included in LLM cost) → **~$3.00 / mo**
+- **Server Hosting**: Hetzner Cloud (CPX series VPS + Managed PostgreSQL) → **~$65.00 / mo**
+- **Total Primary Monthly Cost**: **~$1,269.00 / month**
 
-Even with these third-party baseline estimates ($1,269.00/mo total), the **self-hosted AI strategy remains the superior economic and technical choice** for BOUND OS expansion into West Africa and South Asia.
+### 4.1 Primary Production Financial Breakdown (At $84.3k Current MRR Baseline)
 
-### 4.1 Updated Financial Comparison Table (At $84.3k Current MRR Baseline)
-The following table integrates prototype market rate estimates against our fixed dedicated infrastructure costs:
-
-| Cost Component | 3rd-Party API Provider (Prototype Baseline) | In-House Company AI Engine | CEO Financial Impact |
+| Service / Cost Component | Primary Technology Provider & Pricing | Estimated Monthly Cost | Business & Financial Impact |
 | :--- | :--- | :--- | :--- |
-| **Speech-to-Text (STT)** | $645.00 (Deepgram Nova-2) | **$0.00** (Faster-Whisper) | **Eliminates variable usage fees** |
-| **Large Language Model** | $76.00 (Gemini 1.5 Flash) | **$0.00** (Qwen2.5 / Llama-3) | **Unlimited multilingual reasoning** |
-| **Text-to-Speech (TTS)** | $480.00 (Azure Standard) | **$0.00** (Coqui XTTS v2) | **Zero cost for voice cloning** |
-| **Vision OCR / Hosting** | ~$68.00 (Gemini + Hetzner Cloud) | **Included** in Flat Rate | **Unified infrastructure** |
-| **Total Monthly Cost** | **~$1,269.00 / month** | **$194.50 / month FLAT** | **$1,074.50 / mo SAVED** |
-| **Gross Margin %*** | ~97.2% | **99.3%** | **Industry-Leading Economics** |
+| **Speech-to-Text (STT)** | Deepgram Nova-2 ($0.0043 / min) | **$645.00** | High-accuracy 99+ spoken language & trade dialect audio transcription |
+| **Large Language Model (LLM)** | Gemini 1.5 Flash ($0.075/1M in, $0.30/1M out) | **$76.00** | High-speed multilingual conversational reasoning & intent extraction |
+| **Text-to-Speech (TTS)** | Azure Standard TTS ($4.00 / 1M chars) | **$480.00** | Natural speech synthesis & voice response generation in 100+ languages |
+| **Vision OCR** | Gemini 1.5 Flash Multimodal | **~$3.00** | Automated receipt, delivery slip, and document matching |
+| **Server Hosting** | Hetzner Cloud (CPX series VPS + Managed PostgreSQL) | **~$65.00** | Production Web API hosting, multi-tenant DB, Redis broker |
+| **TOTAL PRIMARY INFRASTRUCTURE** | **Active Production Cloud API Stack** | **~$1,269.00 / month** | **Yields 97.2% Gross Margin at $84.3k MRR current scale** |
 
-*\*Gross Margin calculated based on current operational revenue of $84,320.00/mo across 1,214 active stores.*
-
-### 4.2 Client Architecture Selection Matrix & Direct Hosting Costs
-> **Executive Note for Clients:** All costs in this matrix represent **direct 3rd-party pass-through costs** paid directly to underlying infrastructure providers (Hetzner Dedicated, Groq, Google Cloud, Deepgram, Azure). They are NOT platform software markups.
+### 4.2 Architectural Options & Financial Scaling Matrix
+> **Executive Note for Clients:** All costs in this matrix represent **direct 3rd-party pass-through costs** paid directly to underlying infrastructure providers (Deepgram, Google Cloud, Azure, Hetzner). They are NOT platform software markups.
 
 | Architecture Option | Direct Monthly Cost | Pass-Through Cost Line Items | Gross Profit ($84.3k MRR) | Gross Margin % | Key Technical & Strategic Benefit |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Option 1: Ultra-Lean In-House GPU Stack** *(Recommended)* | **$99.00 / mo FLAT** | Single Hetzner Dedicated GPU AX42 / Bare-Metal Node ($99/mo flat) for vLLM FP8 + DB + Web API. | **$84,221.00 / mo** | **99.88%** | Maximum profit margin, 100% data privacy, tuned for Nouchi & Dioula dialects, zero token anxiety. |
-| **Option 2: Multi-Node Redundant In-House Stack** | **$194.50 / mo FLAT** | Hetzner AX102 GPU Server ($119/mo) + CPX31 Web/DB Node ($16.50/mo) + setup/bandwidth ($59/mo). | **$84,125.50 / mo** | **99.77%** | Enterprise redundant hardware isolation across dual data centers for 99.99% SLA. |
-| **Option 3: Hyper-Optimized 3rd-Party APIs** | **~$314.67 / mo** | Groq STT ($66.67) + Gemini 2.0 LLM ($30.00) + Deepgram Aura TTS ($150.00) + Hetzner Cloud ($68.00). | **$84,005.33 / mo** | **99.62%** | Zero server maintenance; utilizes ultra-fast pay-as-you-go API providers. |
-| **Option 4: Standard 3rd-Party APIs** *(Baseline)* | **~$1,269.00 / mo** | Deepgram Nova-2 STT ($645.00) + Gemini 1.5 LLM ($76.00) + Azure TTS ($480.00) + Hetzner Cloud ($68.00). | **$83,051.00 / mo** | **98.49%** | Commercial off-the-shelf API baseline. |
+| **Primary Active Stack: Commercial Cloud APIs** | **~$1,269.00 / mo** | Deepgram Nova-2 ($645) + Gemini 1.5 Flash ($76) + Azure TTS ($480) + Hetzner Cloud ($65). | **$83,051.00 / mo** | **97.2%** | **Active Production Baseline.** High reliability, zero GPU hardware management. |
+| **Secondary Enterprise Stack: In-House Dedicated GPU** | **$194.50 / mo FLAT** | Hetzner AX102 GPU Server ($119/mo) + CPX31 Web/DB Node ($16.50/mo) + setup/bandwidth ($59/mo). | **$84,125.50 / mo** | **99.77%** | Secondary in-house option for extreme data privacy & zero-token-anxiety scaling. |
+| **Ultra-Lean In-House GPU Stack** | **$99.00 / mo FLAT** | Single Hetzner Dedicated GPU AX42 / Bare-Metal Node ($99/mo flat) for vLLM FP8 + DB + Web API. | **$84,221.00 / mo** | **99.88%** | Secondary single-node option for minimum hardware flat rates. |
 
-### 4.3 Key Strategic Adjustments:
+### 4.3 Key Strategic Takeaways:
+* **Industry-Leading Economics (97.2% Gross Margin):** Operating the active primary Cloud API stack at **~$1,269 / month** total cost yields **$83,051.00 net monthly profit** on current revenue ($84,320.00 MRR), representing an exceptional 97.2% gross margin.
+* **Turnkey Enterprise Reliability:** Leveraging Deepgram Nova-2, Gemini 1.5 Flash, and Azure Standard TTS eliminates server maintenance overhead while ensuring global SLA reliability across all active commercial hubs.
+* **Secondary In-House Path:** Clients desiring dedicated hardware isolation can seamlessly toggle to the self-hosted open-weights stack ($99 - $194.50/mo flat) via system configuration settings (`AI_ENGINE_BACKEND=cloud_api|vllm`).
 
-* **Retention of 99%+ Margins:** Moving to an in-house GPU stack (Option 1 @ $99/mo flat or Option 2 @ $194.50/mo flat) maintains **99.77% - 99.88% gross margins**, generating over **$84,100.00 in monthly net profit** at current scale ($84,320 MRR). At 10,000 stores, these savings scale to multi-million dollar annual advantages ($149.9k+/year).
-* **Superior Localization for West Africa & South Asia:** Beyond cost, third-party providers like Azure or Deepgram struggle with specific **Nouchi (Abidjan slang)**, **Dioula trade dialects**, **Wolof**, **Sylheti**, and **Chittagonian**. Our self-hosted **Faster-Whisper and Qwen2.5** pipeline is explicitly fine-tuned to handle these regional nuances natively (*"J'ai gâté 2 sacs de riz"*).
-* **Elimination of "Token Anxiety":** Lock in a **flat $99.00 - $194.50/month rate** on Hetzner dedicated hardware to offer **unlimited voice and vision scans** to merchants, forming a massive competitive moat in the $29/month Starter Plan.
-* **Infrastructure Synergy:** Incorporates web and database hosting. By moving to our **Dedicated bare-metal server**, we host the AI models for $0 extra while absorbing core web app and PostgreSQL database hosting into a single high-performance environment.
-
-This framework confirms that the move to an in-house self-hosted AI stack is the only way to maintain **99.3%+ gross margins** while providing a zero-friction, voice-first experience tailored to the ground reality of retail across West Africa and South Asia.
 

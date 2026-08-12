@@ -1,18 +1,19 @@
 # BOUND OS — Master SaaS Platform, Autonomous AI Support & Multi-Tenant Ecosystem
 
-> **"Country first. Software second." — Universal Multilingual, 100% In-House AI Stack & 3-Tier Client Architecture Blueprint**
+> **"Country first. Software second." — Universal Multilingual, Active Cloud API & Self-Hosted AI Architecture Blueprint**
 
 ---
 
 ## 🌟 Executive Overview
 This repository contains the complete architectural specification, business strategy, technical infrastructure blueprint, VPS/GPU cost matrix, 3-month execution roadmap, and regional deployment validation for **BOUND OS**.
 
-Built on a **100% In-House Self-Hosted AI Engine** (with fallback support for 3rd-party API gateways), BOUND OS delivers a **Voice-First and Vision-First** experience for merchants across **100+ global languages and native regional dialects** (French, Nouchi, Dioula, Wolof, Pulaar, Bengali, Sylheti, Chittagonian, Hindi, Spanish, Arabic, etc.).
+BOUND OS operates on an **Active Primary Production Stack** powered by commercial Cloud APIs (Deepgram Nova-2, Gemini 1.5 Flash, Azure Standard TTS, Hetzner Cloud CPX VPS & Managed PostgreSQL) at **~$1,269 / month total cost**, delivering a **Voice-First and Vision-First** experience for merchants across **100+ global languages and native regional dialects** (French, Nouchi, Dioula, Wolof, Pulaar, Bengali, Sylheti, Chittagonian, Hindi, Spanish, Arabic, etc.). Self-hosted open-weights serving is maintained as an optional secondary enterprise path.
 
-### 📊 Live Platform Operational Metrics (from `Bound OS Prototype.dc.html`)
+### 📊 Live Platform Operational Metrics & Primary Infrastructure Cost
 * **Net MRR**: **$84,320 / month** across **1,214 active paying stores** (3 active regions, 11 cities, scaling to 10k+ total users).
 * **Daily Volume**: **38,902 transactions / 24 hours** (71% voice-first, 18% camera vision OCR).
-* **Gross Margin**: **97.2% - 99.3%** depending on AI serving tier ($1,269/mo 3rd-party baseline vs $99–$194.50/mo flat in-house GPU stack).
+* **Primary Production Monthly AI & Infra Spend**: **~$1,269 / month** total flat & usage cost.
+* **Gross Margin**: **97.2%** at current $84.3k MRR baseline.
 
 ---
 
@@ -43,13 +44,13 @@ Built on a **100% In-House Self-Hosted AI Engine** (with fallback support for 3r
 
 All detailed specifications are organized in the [`docs/`](file:///d:/Frank/docs/) folder:
 
-1. **[01_CEO_EXECUTIVE_STRATEGY.md](docs/01_CEO_EXECUTIVE_STRATEGY.md)** — Executive business strategy, monetization tiers ($29 - $299/mo), 99.3% gross profit margin, competitive moat matrix, and autonomous AI Lead Hunter funnels.
-2. **[02_DEV_INFRASTRUCTURE_ARCHITECTURE.md](docs/02_DEV_INFRASTRUCTURE_ARCHITECTURE.md)** — Full technical spec for Flutter Mobile Clerk App, Dual Tenant CEO Web/Mobile Portals, Master Web SaaS Admin, 99+ language STT, 100+ language TTS, 80+ script vision OCR matcher, and HITL IT ticket execution sandbox.
-3. **[03_COST_VPS_AI_MODEL_MATRIX.md](docs/03_COST_VPS_AI_MODEL_MATRIX.md)** — Dedicated GPU server topology (Hetzner Dedicated AX102 + CPX31 @ $194.50/mo flat cost), local `vLLM` model serving specs, and $0.00 variable API fee breakdown.
+1. **[01_CEO_EXECUTIVE_STRATEGY.md](docs/01_CEO_EXECUTIVE_STRATEGY.md)** — Executive business strategy, monetization tiers ($29 - $299/mo), 97.2% gross profit margin, competitive moat matrix, and autonomous AI Lead Hunter funnels.
+2. **[02_DEV_INFRASTRUCTURE_ARCHITECTURE.md](docs/02_DEV_INFRASTRUCTURE_ARCHITECTURE.md)** — Full technical spec for Flutter Mobile Clerk App, Dual Tenant CEO Web/Mobile Portals, Master Web SaaS Admin, Cloud API STT/LLM/TTS streaming, 80+ script vision OCR matcher, and HITL IT ticket execution sandbox.
+3. **[03_COST_VPS_AI_MODEL_MATRIX.md](docs/03_COST_VPS_AI_MODEL_MATRIX.md)** — Primary Cloud API infrastructure cost matrix (~$1,269/mo), secondary self-hosted vLLM GPU server topology options, and latency specs.
 4. **[04_THREE_MONTH_ROADMAP.md](docs/04_THREE_MONTH_ROADMAP.md)** — 30-day sprint execution roadmap from core multi-tenant backend to global pilot deployment across West Africa and South Asia.
 5. **[05_UNIVERSAL_SCHEMAS_AND_APIS.md](docs/05_UNIVERSAL_SCHEMAS_AND_APIS.md)** — Django ORM models for Universal Inventory, Tenant CEO Analytics, Granular Permission Matrix (`accView`, `accApprove`, `accPrice`, `accTeam`, `accExport`), IT Support Tickets, and DRF ViewSet API specifications.
 6. **[06_WEST_AFRICA_IVORY_COAST_STRATEGY.md](docs/06_WEST_AFRICA_IVORY_COAST_STRATEGY.md)** — Market validation blueprint for Ivory Coast (Côte d'Ivoire), Senegal, and West Africa (French, Nouchi, Dioula voice handling & Wave / Orange Money integration).
-7. **[07_FINANCIAL_COMPARISON.md](docs/07_FINANCIAL_COMPARISON.md)** — Detailed financial blueprint comparing 3rd-party APIs ($1,269/mo) vs in-house AI stack ($99 - $194.50/mo flat), client selection options, pass-through costs, and multi-year scaling projections up to 10,000 stores.
+7. **[07_FINANCIAL_COMPARISON.md](docs/07_FINANCIAL_COMPARISON.md)** — Detailed financial blueprint comparing the primary Cloud API stack ($1,269/mo) vs self-hosted GPU options ($99 - $194.50/mo flat), client selection options, pass-through costs, and multi-year scaling projections up to 10,000 stores.
 
 ---
 
@@ -77,48 +78,17 @@ All detailed specifications are organized in the [`docs/`](file:///d:/Frank/docs
 
 ---
 
-## 🚀 In-House AI Stack vs. 3rd-Party APIs
+## 🚀 Active Primary Production AI Stack (~$1,269 / month)
 
-### Self-Hosted Open-Weights Architecture
-| AI Capability | Self-Hosted Open-Weights Model | Serving Engine | Target Latency | Variable API Fee |
-|---------------|--------------------------------|----------------|----------------|------------------|
-| **Speech-to-Text (STT)** | `faster-whisper-large-v3-turbo` | CTranslate2 / Python | **212 ms** | **$0.00** |
-| **Text-to-Speech (TTS)** | `Coqui XTTS v2` + `Piper-TTS` | PyTorch / ONNX Python | **< 180 ms** | **$0.00** |
-| **AI Conversational Dialog** | `Qwen2.5-7B` + `Llama-3.3-8B` | vLLM / Ollama Python SDK | **187 ms** | **$0.00** |
-| **Vision OCR Stock Matcher** | `Qwen2-VL-7B` + `PaddleOCR` | PyTorch / vLLM Python | **< 600 ms** | **$0.00** |
-| **Lead Hunter & IT Reasoning** | `DeepSeek-R1-Distill-14B` | vLLM / Ollama Python SDK | Async | **$0.00** |
-| **Server Infrastructure** | Hetzner Dedicated AX102 + CPX31 | Dedicated GPU + Web Server | — | **$194.50 / mo FLAT** |
-
-### Updated Financial Comparison: 3rd-Party APIs vs. In-House AI Stack
-The following table integrates market rates for 3rd-party services (Deepgram, Gemini, Azure) against our fixed infrastructure costs at the current 1,000 store baseline ($29,000 MRR):
-
-| Cost Component | 3rd-Party API Provider (Prototype Baseline) | In-House Company AI Engine | CEO Financial Impact |
+### Primary Infrastructure Breakdown
+| Service | Technology Provider & Pricing | Estimated Monthly Cost | Primary Role & Capabilities |
 | :--- | :--- | :--- | :--- |
-| **Speech-to-Text (STT)** | $645.00 (Deepgram Nova-2 @ $0.0043/min) | **$0.00** (Faster-Whisper) | **Eliminates variable usage fees** |
-| **Large Language Model** | $76.00 (Gemini 1.5 Flash @ $0.075/1M in) | **$0.00** (Qwen2.5 / Llama-3) | **Unlimited multilingual reasoning** |
-| **Text-to-Speech (TTS)** | $480.00 (Azure Standard @ $4.00/1M chars) | **$0.00** (Coqui XTTS v2) | **Zero cost for voice cloning** |
-| **Vision OCR / Hosting** | ~$68.00 (Gemini Multimodal + Hetzner Cloud) | **Included** in Flat Rate | **Unified infrastructure** |
-| **Total Monthly Cost** | **~$1,269.00 / month** | **$194.50 / month FLAT** | **$1,074.50 / mo SAVED** |
-| **Gross Margin %*** | ~95.62% | **99.33%** | **Industry-Leading Economics** |
-
-*\*Gross Margin calculated based on sample revenue of $29,000 (1,000 stores on the $29 Starter Plan).*
-
-### Client Architecture Selection Matrix & Direct Hosting Costs
-> **Note for Clients:** All hosting and API fees listed below represent **direct 3rd-party pass-through costs** paid directly to infrastructure providers (Hetzner, Groq, Google Cloud, Deepgram, Azure). They are NOT platform software markups.
-
-| Architecture Tier | Direct 3rd-Party / Hosting Cost | Renting / API Cost Breakdown | Gross Margin ($29k MRR) | Primary Advantage |
-| :--- | :--- | :--- | :--- | :--- |
-| **Option 0: Ultra-Low Capital Entry Tier** *(For Low Capital Clients)* | **$35.00 - $49.00 / mo FLAT** | Hetzner CPX31 / AMD Ryzen CPU Server ($35-$49/mo flat) running llama.cpp CPU + Faster-Whisper CPU. | **98.31%** *(100 stores)* | **Lowest upfront capital investment.** Zero GPU hardware fees. Ideal for initial 50-200 store pilot phase. |
-| **Option 1: Ultra-Lean In-House GPU Stack** *(Recommended)* | **$99.00 / month FLAT** | Single Hetzner Dedicated GPU AX42 / Bare-Metal node ($99/mo flat) hosting vLLM FP8 AI + DB + Web API. | **99.66%** ($28,901.00 net) | Max margin, 100% privacy, Nouchi/Dioula tuned, zero token anxiety. |
-| **Option 2: Multi-Node Redundant In-House Stack** | **$194.50 / month FLAT** | Hetzner AX102 GPU Server ($119/mo) + CPX31 Web/DB Node ($16.50/mo) + setup/bandwidth ($59/mo). | **99.33%** ($28,805.50 net) | Redundant enterprise hardware, 99.99% uptime isolation across data centers. |
-| **Option 3: Hyper-Optimized 3rd-Party APIs** | **~$314.67 / month** | Groq STT ($66.67) + Gemini 2.0 LLM ($30) + Deepgram Aura TTS ($150) + Hetzner Cloud ($68). | **98.91%** ($28,685.33 net) | Zero server maintenance; pay-as-you-go ultra-fast API providers. |
-| **Option 4: Standard 3rd-Party APIs** *(Screenshot Baseline)* | **~$1,269.00 / month** | Deepgram Nova-2 STT ($645) + Gemini 1.5 LLM ($76) + Azure TTS ($480) + Hetzner Cloud ($68). | **95.62%** ($27,731.00 net) | Commercial off-the-shelf API baseline. |
-
-### Key Strategic Advantages:
-* **Retention of 99%+ Margins:** Moving to the in-house stack increases monthly net profit by **$1,074.50 - $1,170.00/month** at 1,000 stores ($29,000 MRR). At 10,000 stores, savings scale to multi-million dollar annual advantages ($149.9k+/year).
-* **Superior Localization for West Africa:** Deepgram & Azure struggle with **Nouchi (Abidjan street slang)** and **Dioula trade dialects**. Self-hosted `Faster-Whisper` + `Qwen2.5` natively handles regional nuances (*"J'ai gâté 2 sacs de riz"*).
-* **Elimination of Token Anxiety:** Lock in **$99.00 - $194.50/month flat cost** for unlimited voice and vision scans on Hetzner dedicated hardware.
-* **Infrastructure Synergy:** Dedicated bare-metal hardware unifies AI model serving, PostgreSQL multi-tenant database, and web API hosting into one high-performance environment.
+| **STT (Speech-to-Text)** | Deepgram Nova-2 ($0.0043 / min) | **$645.00** | High-accuracy 99+ spoken language & dialect audio transcription |
+| **LLM (Language Model)** | Gemini 1.5 Flash ($0.075/1M in, $0.30/1M out) | **$76.00** | High-speed multilingual conversational reasoning & intent extraction |
+| **TTS (Text-to-Speech)** | Azure Standard TTS ($4.00 / 1M chars) | **$480.00** | Natural multi-lingual speech synthesis & voice response generation |
+| **Vision OCR** | Gemini 1.5 Flash Multimodal | **~$3.00** | Document & photo OCR matching (Delivery slips, invoices, business cards) |
+| **Server Hosting** | Hetzner Cloud (CPX series VPS + Managed PostgreSQL) | **~$65.00** | Production Web API hosting, multi-tenant DB, Redis broker |
+| **TOTAL PRIMARY STACK** | **Production Primary Architecture** | **~$1,269.00 / month** | **Yields 97.2% Gross Margin at $84.3k MRR current scale** |
 
 ---
 

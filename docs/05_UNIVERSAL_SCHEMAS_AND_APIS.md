@@ -114,7 +114,8 @@ class StoreTask(TenantScopedModel):
 | `GET/POST` | `/api/v1/support/tickets/` | `ITSupportTicketViewSet` | **Mobile App & CEO Web Portal** | Support Tickets & Conversation Logs | Tenant User / AI Agent |
 | `POST` | `/api/v1/support/tickets/{id}/approve/` | `ApproveAndExecuteScriptView.as_view()` | **Master Web Portal** | **1-Click IT Code Execution** (`$ approve --ticket ...`) | Platform Owner Only |
 
-> **Architecture Routing Adapter Note:** Django REST Framework handlers (`VoiceTelephonyBridgeView` & `VisionOCRMatchView`) support dynamic routing backends:
-> - **Option 1 & 2 (In-House vLLM):** Routes audio/image payloads directly to local `vLLM` & `Faster-Whisper` socket endpoints ($0.00 variable fee).
-> - **Option 3 & 4 (3rd-Party APIs):** Routes audio/image payloads to Groq Turbo / Gemini 2.0 / Deepgram API gateways via environment flags (`AI_ENGINE_BACKEND=vllm|groq|gemini`).
+> **Architecture Routing Adapter Note:** Django REST Framework handlers (`VoiceTelephonyBridgeView` & `VisionOCRMatchView`) support dynamic routing backends via environment settings:
+> - **Primary Production Stack (`AI_ENGINE_BACKEND=cloud_api`):** Routes audio/image payloads directly to Deepgram Nova-2 STT ($645/mo), Gemini 1.5 Flash LLM ($76/mo), Azure Standard TTS ($480/mo), and Gemini Multimodal OCR (~$3/mo).
+> - **Secondary In-House Stack (`AI_ENGINE_BACKEND=vllm`):** Routes audio/image payloads to local dedicated bare-metal GPU `vLLM` & `Faster-Whisper` socket endpoints ($99–$194.50/mo flat cost).
+
 

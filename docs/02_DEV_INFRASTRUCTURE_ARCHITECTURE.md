@@ -140,10 +140,15 @@ sequenceDiagram
     end
 ```
 
-### 6.1 Performance Benchmarks & Serving Topology
-* **Faster-Whisper STT Latency:** **212 ms** on self-hosted Hetzner node.
-* **Qwen2.5 LLM Latency:** **187 ms** via local vLLM serving engine.
-* **Serving Option 1 (Single-Node FP8 vLLM Engine - $99.00/mo FLAT):** Quantizes `Qwen2.5-7B` (FP8), `Qwen2-VL` (FP8), `Faster-Whisper` (INT8), and `XTTS v2` into < 15 GB VRAM on a single Hetzner GPU AX42 server (**99.66% gross margin**).
-* **Serving Option 2 (Multi-Node Redundant Cluster - $194.50/mo FLAT):** Dedicated AX102 GPU node ($119/mo) + CPX31 Web/DB node ($16.50/mo), delivering **99.33% gross margin** with 99.99% enterprise SLA.
-* **Serving Option 4 (Cloud API Gateway Baseline - ~$1,269.00/mo):** Deepgram Nova-2 ($645/mo) + Gemini 1.5 Flash ($76/mo) + Azure TTS ($480/mo) + Hetzner Cloud ($68/mo).
+### 6.1 Active Performance Benchmarks & Serving Topology
+* **Primary Serving Option (Commercial Cloud API Stack - ~$1,269.00/mo):**
+  - **Speech-to-Text (STT):** Deepgram Nova-2 ($0.0043/min) → **$645.00/mo**
+  - **Conversational LLM:** Gemini 1.5 Flash ($0.075/1M in, $0.30/1M out) → **$76.00/mo**
+  - **Text-to-Speech (TTS):** Azure Standard TTS ($4.00/1M chars) → **$480.00/mo**
+  - **Vision OCR:** Gemini 1.5 Flash Multimodal → **~$3.00/mo**
+  - **Server Hosting:** Hetzner Cloud (CPX series VPS + Managed PostgreSQL) → **~$65.00/mo**
+  - **Gross Margin:** **97.2%** at current $84.3k MRR baseline.
+* **Secondary Serving Option 1 (Single-Node In-House GPU - $99.00/mo FLAT):** Hetzner GPU AX42 server hosting FP8 vLLM engine.
+* **Secondary Serving Option 2 (Multi-Node Redundant GPU Cluster - $194.50/mo FLAT):** Hetzner AX102 GPU Server ($119/mo) + CPX31 Web/DB Node ($16.50/mo).
+
 
