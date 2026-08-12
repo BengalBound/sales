@@ -1,29 +1,53 @@
-# Master SaaS Platform — Developer Infrastructure & Architecture Specification (Mobile App + Dual Web/App CEO Portal + Master SaaS Admin)
+# BOUND OS — Developer Infrastructure & Architecture Specification
 
 ## Technical Architecture Overview
-This specification defines the developer implementation details for the **Master SaaS Admin Platform, Autonomous AI Support, and Multi-Tenant Ecosystem**. 
+This specification defines the developer implementation details for **BOUND OS** ("Country first. Software second.").
 
 **STRICT COMPLIANCE & TOUCHPOINT ARCHITECTURE:**
-1. **Store Clerks & Salesmen:** **100% Mobile App Based** (Cross-platform **Flutter / React Native** app for Android & iOS) featuring native one-tap mic voice recording, instant camera OCR scanning, offline-first local SQLite sync, and native Mobile Money checkout (Wave, Orange Money, MTN MoMo).
-2. **Subscribed Business CEOs & Store Owners (Tenants):** **DUAL ACCESS — Mobile App AND Web Dashboard Portal**. Tenant CEOs can monitor real-time sales, staff performance, inventory status, and AI support tickets from either their mobile phone app or any desktop web browser.
-3. **Master Platform Admin (Us / Platform Owners):** **Web-Based Master SaaS Control Panel & IT Approval Center** (Django 5.0 + DRF + Responsive Master Admin Portal) for global network metrics, tenant billing, white-label branding, lead hunter campaigns, and Human-In-The-Loop (HITL) IT script approvals.
+1. **Store Clerks & Salesmen (`rep`):** **100% Mobile App Based** (Cross-platform **Flutter** app for Android & iOS) featuring native one-tap mic voice recording, instant camera OCR scanning, offline-first local SQLite sync, and native Mobile Money checkout (Wave, Orange Money, MTN MoMo, Moov, bKash, Nagad). Minimum touch target size: 96px for 2-tap sales flow. Permissions: `accView`.
+2. **Subscribed Business CEOs & Managers (`manager`):** **DUAL ACCESS — Mobile App AND Web Dashboard Portal**. Tenant managers can monitor real-time sales, staff performance, inventory status, approve/reject transactions, and resolve field requests from either their mobile phone app or desktop web browser. Permissions: `accView`, `accApprove`, `accExport`.
+3. **Master Platform Owners & Store Owners (`owner`):** **Web-Based Master SaaS Control Panel & IT Approval Center** (Django 5.0 + DRF + Responsive Master Admin Portal) for global network metrics ($84.3k MRR, 1.2k+ active stores across 3 live regions & 6 pipeline markets), price & commission setting, granular user access control, tenant billing, white-label branding, lead hunter campaigns, and Human-In-The-Loop (HITL) IT script approvals (`$ approve --ticket 4127 --execute`). Permissions: `accView`, `accApprove`, `accPrice`, `accTeam`, `accExport`.
 
 ---
 
-## 1. Touchpoint Architecture & Client Layer
+## 1. Dynamic Region Engine & Single Codebase Architecture
+
+BOUND OS implements a **"Country First"** architectural pattern:
+
+```
+                  +----------------------------------------------+
+                  |  JWT Token Payload (Country Code: CI/SN/BD)  |
+                  +----------------------------------------------+
+                                         |
+         +-------------------------------+-------------------------------+
+         |                               |                               |
+         v                               v                               v
++------------------+           +-------------------+           +-------------------+
+| Language & Voice |           | Currency & Digits |           | Payment Rails &   |
+| (Nouchi/Dioula/  |           | (XOF FCFA, BDT ৳, |           | Catalog           |
+| Wolof/Bengali)   |           | Bengali digits)   |           | (Wave, OM, bKash) |
++------------------+           +-------------------+           +-------------------+
+```
+
+* **Single Client Codebase (Flutter):** Zero per-country app builds. A single APK/IPA dynamically adapts language, currency formatting, thousand separators (`sep`), digit scripts (e.g. `০-৯` in Bengali), payment rails, receipt templates, and regional support admin context directly from the merchant's JWT token payload.
+* **Backend Isolation (Django + DRF):** Multi-tenant PostgreSQL database where `country` is a top-level column. Regional catalogues, payment gateways, and receipt templates are database rows, not code deployments.
+
+---
+
+## 2. Touchpoint Architecture & Client Layer
 
 ```mermaid
 graph TD
-    subgraph "Tier 1: Store Clerks & Salesmen"
+    subgraph "Tier 1: Store Clerks & Salesmen (rep)"
         ClerkApp[Android & iOS Native Mobile App - Voice & Vision]
     end
 
-    subgraph "Tier 2: Tenant Business CEOs / Store Owners"
+    subgraph "Tier 2: Tenant Business CEOs & Managers (manager)"
         CEOMobileApp[Tenant CEO Mobile App - iOS/Android Analytics]
         CEOWebPortal[Tenant CEO Web Dashboard Portal - Desktop/Browser]
     end
 
-    subgraph "Tier 3: Master Platform Owners (Us)"
+    subgraph "Tier 3: Master Platform Owners & Store Owners (owner)"
         MasterWebAdmin[Master SaaS Web Control Panel & HITL IT Approval Center]
     end
 
@@ -43,62 +67,83 @@ graph TD
 
 ---
 
-## 2. Tiered Client Architecture
+## 3. Tiered Client & Permission Architecture
 
-### 2.1 Tier 1: Store Clerks & Salesmen (100% Mobile App)
-* **Native Audio & Camera Engine:** One-tap voice recording (`record` / `flutter_sound`) and instant camera OCR photo scanning (`camera` package) connected to the in-house `Qwen2-VL` vision endpoint.
-* **Offline-First SQLite Caching:** Local SQLite storage caches sales entries, offline stock levels, and voice drafts. Auto-syncs with Django DRF backend when reconnected.
-* **Mobile Money Payment SDKs:** One-click in-app checkout supporting Wave, Orange Money, MTN MoMo, and Moov Money.
+### 3.1 Role & Granular Permission Matrix
+```python
+PERM_KEYS = ['accView', 'accApprove', 'accPrice', 'accTeam', 'accExport']
 
-### 2.2 Tier 2: Subscribed Tenant CEOs & Store Owners (Dual Access: Mobile App + Web Portal)
-* **Real-Time Analytics Dashboard:** Real-time store revenue, daily sales charts, top-performing product rankings, inventory alerts, and salesman activity metrics.
-* **Responsive Web Portal & Mobile App:** Responsive Web Portal (React / Vue / Django Templates) accessible via desktop browser AND native iOS/Android mobile dashboard app.
-* **Store Management & Staff Control:** Add/remove salesman accounts, configure custom store prices, view digital receipts, and audit AI call center support transcripts.
+ROLE_PERMS = {
+    'rep': ['accView'],
+    'manager': ['accView', 'accApprove', 'accExport'],
+    'owner': ['accView', 'accApprove', 'accPrice', 'accTeam', 'accExport'],
+}
+```
 
-### 2.3 Tier 3: Master SaaS Platform Admin (Us / Platform Owners)
-* **Master Web Control Center:** Global real-time dashboard displaying active store counts across countries, total transaction volume, MRR, system health, and self-hosted GPU node loads.
-* **White-Label Branding Engine:** Configure custom logos, colors, domain routing (`tenant.clientdomain.com`), and mobile app splash screens per enterprise customer.
-* **Human-in-the-Loop (HITL) IT Approval Queue:** Web interface to review, approve, and execute AI-generated Python fix scripts for technical support tickets.
-* **AI Lead Hunter Campaign Manager:** Launch and track autonomous prospecting campaigns across global target regions.
+### 3.2 Scope-Based Direct Messaging & Task Delegation Rules (`CAN_SEND`)
+* **Sales Rep (`rep`):** Can assign tasks / send messages ONLY to `manager`.
+* **Manager (`manager`):** Can assign tasks / send messages to `rep` and `owner`.
+* **Owner (`owner`):** Can assign tasks / send messages to `manager` and `rep`.
 
 ---
 
-## 3. Autonomous 24/7 AI Call Center & IT Ticketing System
+## 4. Offline-First Engine & Local Replay Queue
+
+```
++-----------------------------------------------------------------------------------+
+|                               OFFLINE REPLAY QUEUE                                |
++-----------------------------------------------------------------------------------+
+| 1. Mobile app writes transaction to local SQLite storage instantly.               |
+| 2. Replay queue retains voice notes, camera scans, and cash sales while offline.  |
+| 3. Network re-connection triggers idempotent HTTP replay to Django DRF.          |
+| 4. Server executes deduplication using UUID idempotency keys.                     |
++-----------------------------------------------------------------------------------+
+```
+
+---
+
+## 5. Document Vision OCR Engine (`Qwen2-VL` / `PaddleOCR`)
+
+The Vision engine supports 3 core document types and automatically maps them to actionable business flows:
+
+| Document Type (`scanDoc`) | Document Label | Triggered AI Actions (`scanActions`) |
+| :--- | :--- | :--- |
+| `delivery` | Delivery Slip (Bordereau) | `actStockIn` (Stock Entry), `actPriceCheck` (Price Verification) |
+| `invoice` | Supplier Invoice (Facture) | `actRecordSale` (Record Sale), `actStockIn` (Stock Entry) |
+| `card` | Business Card (Carte de visite) | `actSaveContact` (Save Contact), `actAddSupplier` (Add Supplier) |
+
+---
+
+## 6. Autonomous 24/7 AI Call Center & IT Ticketing System
 
 ```mermaid
 sequenceDiagram
     participant Merchant as Store Owner / Salesman (Mobile App / WhatsApp)
     participant PyVoiceStream as Mobile Voice Stream Bridge
-    participant LocalSTT as In-House STT (Faster-Whisper - Nouchi/Dioula Tuned)
+    participant LocalSTT as In-House STT (Faster-Whisper - Nouchi/Dioula/Wolof/Bengali)
     participant LocalLLM as In-House Multilingual LLM (Qwen2.5 / Llama-3)
     participant LocalTTS as In-House Multilingual TTS (XTTS v2)
     participant PyTicketEngine as Python Smart Ticketing Engine
     participant MasterWebAdmin as Master Web Portal (Us / IT Admin)
 
     Merchant->>PyVoiceStream: One-Tap Mobile Voice / Telephony Stream
-    PyVoiceStream->>LocalSTT: Transcribe Audio in Native Language & Dialects
-    LocalSTT-->>LocalLLM: Direct Text Stream to Local vLLM
+    PyVoiceStream->>LocalSTT: Transcribe Audio in Native Dialect (212 ms)
+    LocalSTT-->>LocalLLM: Direct Text Stream to Local vLLM (187 ms)
     LocalLLM-->>LocalTTS: Generated Response Tokens -> Local TTS Engine
     LocalTTS-->>PyVoiceStream: Stream Audio Back to Mobile App / Call
     
-    alt Complex Technical Issue
+    alt Complex Technical Issue (e.g. Sync Blocked #4127)
         PyVoiceStream->>PyTicketEngine: Auto-create Ticket + Transcribe Conversation
         PyTicketEngine->>LocalLLM: Local DeepSeek-R1 -> Generate Python Fix Script
-        PyTicketEngine->>MasterWebAdmin: Push Ticket to Master Web Admin Panel (Us)
-        MasterWebAdmin->>MasterWebAdmin: Platform Owner Clicks 'Approve & Execute'
+        PyTicketEngine->>MasterWebAdmin: Push Ticket to Master Web Admin Panel
+        MasterWebAdmin->>MasterWebAdmin: Platform Owner Clicks '$ approve --ticket 4127 --execute'
     end
 ```
 
-### 3.1 West African Dialect Tuning & Serving Options
-* **Native Nouchi & Dioula Processing:** Unlike 3rd-party APIs (Deepgram Nova-2, Azure TTS, Gemini) which struggle with Ivoirian street slang (*"J'ai gâté 2 sacs de riz"*) and West African trade dialects (Dioula/Jula), our self-hosted `Faster-Whisper` STT and `Qwen2.5` LLM pipeline is explicitly fine-tuned on regional audio patterns.
-* **Serving Option 1 (Single-Node FP8 vLLM Engine - $99.00/mo FLAT):** Quantizes `Qwen2.5-7B` (FP8, 5.5 GB VRAM), `Qwen2-VL` (FP8, 6.0 GB VRAM), `Faster-Whisper` (INT8, 1.5 GB VRAM), and `XTTS v2 / Kokoro` (1.5 GB VRAM) into < 15 GB VRAM on a single Hetzner Dedicated GPU AX42 server, yielding **99.66% gross margins**.
-* **Serving Option 2 (Multi-Node Redundant Cluster - $194.50/mo FLAT):** Separates Primary GPU (`AX102` @ $119/mo) for unquantized high-concurrency vLLM inference from Web/PostgreSQL node (`CPX31` @ $16.50/mo), delivering **99.33% gross margins** with 99.99% enterprise SLA.
-* **Serving Option 3 (Hyper-Optimized 3rd-Party API Bridge - ~$314.67/mo):** Configures DRF API adapters to stream audio directly to Groq Whisper Turbo ($0.04/hr) and Gemini 2.0 Flash ($0.10/1M tokens) as a zero-hardware-maintenance option or emergency automated failover.
+### 6.1 Performance Benchmarks & Serving Topology
+* **Faster-Whisper STT Latency:** **212 ms** on self-hosted Hetzner node.
+* **Qwen2.5 LLM Latency:** **187 ms** via local vLLM serving engine.
+* **Serving Option 1 (Single-Node FP8 vLLM Engine - $99.00/mo FLAT):** Quantizes `Qwen2.5-7B` (FP8), `Qwen2-VL` (FP8), `Faster-Whisper` (INT8), and `XTTS v2` into < 15 GB VRAM on a single Hetzner GPU AX42 server (**99.66% gross margin**).
+* **Serving Option 2 (Multi-Node Redundant Cluster - $194.50/mo FLAT):** Dedicated AX102 GPU node ($119/mo) + CPX31 Web/DB node ($16.50/mo), delivering **99.33% gross margin** with 99.99% enterprise SLA.
+* **Serving Option 4 (Cloud API Gateway Baseline - ~$1,269.00/mo):** Deepgram Nova-2 ($645/mo) + Gemini 1.5 Flash ($76/mo) + Azure TTS ($480/mo) + Hetzner Cloud ($68/mo).
 
----
-
-## 4. Universal Multi-Vendor Inventory & Ecosystem
-
-### 4.1 Mobile App & Web Portal Inventory Management
-* **Catalog Browsing:** Fast scrolling list view on mobile app and tabular grid view on CEO web portal with instant voice search and camera photo matching.
-* **Dynamic Form Rendering:** Mobile app and Web portal dynamically render input fields based on JSON schemas received from Django DRF endpoints (`attributes` JSONB column).

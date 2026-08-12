@@ -1,7 +1,7 @@
-# Master SaaS Platform — Universal Data Schemas & API Specification (Mobile App + Dual CEO Web/App Portal)
+# BOUND OS — Universal Data Schemas & API Specification
 
 ## Overview
-This document specifies the core Python database schemas (Django ORM), JSON Pydantic schemas, and REST API definitions (Django REST Framework) for developers implementing the 100% in-house self-hosted AI ecosystem supporting **Mobile Clerk Apps, Dual Web/Mobile CEO Portals, and Master Admin Web Control**.
+This document specifies the core Python database schemas (Django ORM), JSON Pydantic schemas, and REST API definitions (Django REST Framework) for developers implementing **BOUND OS** ("Country first. Software second.").
 
 ---
 
@@ -17,6 +17,7 @@ class TenantScopedModel(models.Model):
     Abstract Python Django Base Model for automatic multi-tenant data isolation.
     """
     tenant = models.ForeignKey('accounts.BusinessInstance', on_delete=models.CASCADE, related_name="%(class)ss")
+    country = models.CharField(max_length=5, db_index=True, help_text="ISO Country Code driving dynamic region logic (CI, SN, BD, ET, NG, etc.)")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -31,10 +32,11 @@ class UniversalInventoryItem(TenantScopedModel):
     sku = models.CharField(max_length=64, db_index=True)
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=100, db_index=True)
+    cost_price = models.DecimalField(max_digits=12, decimal_places=2)
     price = models.DecimalField(max_digits=12, decimal_places=2)
-    cost_price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    commission_rate = models.DecimalField(max_digits=5, decimal_places=2, default=5.0) # e.g. 5%
     stock_quantity = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    unit = models.CharField(max_length=20, default="unit") # e.g. kg, pcs, box
+    unit = models.CharField(max_length=20, default="unit") # e.g. kg, pcs, set, box
     
     # Vision & OCR matching keywords across 80+ written scripts
     vision_keywords = JSONField(default=list, help_text="OCR text tokens for visual camera matching in native scripts")
@@ -48,22 +50,52 @@ class UniversalInventoryItem(TenantScopedModel):
         unique_together = ('tenant', 'sku')
 ```
 
-### 1.2 Tenant White-Label Branding Schema (`models.py`)
+### 1.2 User Roles & Granular Permission Schema (`models.py`)
 ```python
-class TenantBranding(models.Model):
+class UserPermissionProfile(models.Model):
     """
-    Python Django Tenant Branding Model for dynamic white-label theme injection across Web Portal & Mobile App.
+    User Permission Schema enforcing 3-Tier Access Control across Mobile App & Web Portal.
     """
-    tenant = models.OneToOneField('accounts.BusinessInstance', on_delete=models.CASCADE, related_name="branding")
-    company_name = models.CharField(max_length=128)
-    custom_domain = models.CharField(max_length=255, unique=True, null=True, blank=True)
-    logo_url = models.URLField(blank=True)
-    mobile_splash_url = models.URLField(blank=True, help_text="Custom splash image for Tenant CEO & Clerk Mobile App")
-    primary_color = models.CharField(max_length=7, default="#4F46E5") # Hex code
-    secondary_color = models.CharField(max_length=7, default="#10B981")
-    font_family = models.CharField(max_length=64, default="Inter")
-    custom_css = models.TextField(blank=True)
-    native_language = models.CharField(max_length=10, default="fr", help_text="ISO language/dialect code (e.g. fr, nouchi, dioula, bn, hi, es, ar)")
+    ROLE_CHOICES = [
+        ('rep', 'Store Clerk / Sales Rep'),
+        ('manager', 'Store Manager'),
+        ('owner', 'Business Owner'),
+    ]
+    
+    user = models.OneToOneField('auth.User', on_delete=models.CASCADE, related_name="permission_profile")
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='rep')
+    
+    # Granular Override Permissions (JSON map)
+    # Keys: accView, accApprove, accPrice, accTeam, accExport
+    custom_permissions = JSONField(default=dict, blank=True, help_text="Explicit boolean overrides for PERM_KEYS")
+
+    def has_permission(self, perm_key: str) -> bool:
+        if perm_key in self.custom_permissions:
+            return self.custom_permissions[perm_key]
+        DEFAULT_ROLE_PERMS = {
+            'rep': ['accView'],
+            'manager': ['accView', 'accApprove', 'accExport'],
+            'owner': ['accView', 'accApprove', 'accPrice', 'accTeam', 'accExport']
+        }
+        return perm_key in DEFAULT_ROLE_PERMS.get(self.role, [])
+```
+
+### 1.3 Task Assignment & Micro-Messaging Schema (`models.py`)
+```python
+class StoreTask(TenantScopedModel):
+    """
+    Task Assignment Schema supporting Scope-Based Direct Routing (CAN_SEND rules).
+    """
+    PRIORITY_CHOICES = [('low', 'Low'), ('normal', 'Normal'), ('urgent', 'Urgent')]
+    STATUS_CHOICES = [('todo', 'To Do'), ('half', 'In Progress'), ('done', 'Done')]
+    
+    sender = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name="sent_tasks")
+    recipient_role = models.CharField(max_length=20) # 'rep', 'manager', or 'owner'
+    label = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default='normal')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='todo')
+    ai_drafted = models.BooleanField(default=False)
 ```
 
 ---
@@ -72,15 +104,17 @@ class TenantBranding(models.Model):
 
 | Method | Endpoint Route | View / Handler (Python DRF) | Client Touchpoint Target | Multilingual & Dialect Capability | Access Control |
 |--------|----------------|----------------------------|--------------------------|-----------------------------------|----------------|
-| `GET` | `/api/v1/master/overview/` | `MasterMetricsView.as_view()` | **Master Web Portal (Us)** | Global Region Metrics & GPU Load | Master SuperAdmin |
-| `GET` | `/api/v1/ceo/dashboard-analytics/` | `CEODashboardView.as_view()` | **Tenant CEO Mobile App & Web Portal** | Native Language & Dialects | Tenant CEO / Admin |
-| `GET/POST` | `/api/v1/inventory/items/` | `UniversalInventoryViewSet` | **Mobile App & Web Portal** | Multilingual Product Attributes | Tenant Authenticated |
-| `POST` | `/api/v1/vision/ocr-match/` | `VisionOCRMatchView.as_view()` | **Clerk Mobile App (Camera Scan)** | **80+ Written Scripts (Included in Flat Rate)** | Tenant Salesman |
-| `POST` | `/api/v1/voice/telephony-webhook/` | `VoiceTelephonyBridgeView.as_view()` | **Mobile App (Mic) & Telephony** | **99+ Spoken Languages & Dialects (Nouchi, Dioula)** | Telephony Signature |
-| `GET/POST` | `/api/v1/support/tickets/` | `ITSupportTicketViewSet` | **Mobile App & CEO Web Portal** | Native Language Support Tickets | Tenant User / AI Agent |
-| `POST` | `/api/v1/support/tickets/{id}/approve/` | `ApproveAndExecuteScriptView.as_view()` | **Master Web Portal (Us)** | Dynamic Code Execution | IT Admin Only |
-| `GET/POST` | `/api/v1/lead-hunter/campaigns/` | `LeadHunterCampaignViewSet` | **Master Web Portal (Us)** | **Global Pitch Generation** | Master Admin / Enterprise |
+| `GET` | `/api/v1/master/overview/` | `MasterMetricsView.as_view()` | **Master Web Portal** | Global Network Metrics & GPU Load | Master Admin Only |
+| `GET` | `/api/v1/ceo/dashboard-analytics/` | `CEODashboardView.as_view()` | **Tenant CEO Mobile & Web Portal** | Native Language & Dialects | `accView` |
+| `GET/POST` | `/api/v1/inventory/items/` | `UniversalInventoryViewSet` | **Mobile App & Web Portal** | Multilingual Product Attributes | `accView` / `accPrice` |
+| `POST` | `/api/v1/vision/ocr-match/` | `VisionOCRMatchView.as_view()` | **Clerk Mobile App (Camera Scan)** | **`delivery`, `invoice`, `card` OCR processing** | `accView` |
+| `POST` | `/api/v1/voice/telephony-webhook/` | `VoiceTelephonyBridgeView.as_view()` | **Mobile App (Mic) & Voice Call** | **99+ Spoken Languages (212ms STT / 187ms LLM)** | Tenant Authenticated |
+| `POST` | `/api/v1/offline/sync-queue/` | `OfflineQueueReplayView.as_view()` | **Clerk Mobile App (Background Sync)** | **Idempotent Queue Deduplication** | Tenant Authenticated |
+| `GET/POST` | `/api/v1/tasks/` | `StoreTaskViewSet` | **Mobile App & CEO Web Portal** | Scope-restricted task delegation (`CAN_SEND`) | Tenant Authenticated |
+| `GET/POST` | `/api/v1/support/tickets/` | `ITSupportTicketViewSet` | **Mobile App & CEO Web Portal** | Support Tickets & Conversation Logs | Tenant User / AI Agent |
+| `POST` | `/api/v1/support/tickets/{id}/approve/` | `ApproveAndExecuteScriptView.as_view()` | **Master Web Portal** | **1-Click IT Code Execution** (`$ approve --ticket ...`) | Platform Owner Only |
 
 > **Architecture Routing Adapter Note:** Django REST Framework handlers (`VoiceTelephonyBridgeView` & `VisionOCRMatchView`) support dynamic routing backends:
 > - **Option 1 & 2 (In-House vLLM):** Routes audio/image payloads directly to local `vLLM` & `Faster-Whisper` socket endpoints ($0.00 variable fee).
 > - **Option 3 & 4 (3rd-Party APIs):** Routes audio/image payloads to Groq Turbo / Gemini 2.0 / Deepgram API gateways via environment flags (`AI_ENGINE_BACKEND=vllm|groq|gemini`).
+
